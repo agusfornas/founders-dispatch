@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founders Dispatch — Signal for Builders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #fafaf8; --surface: #ffffff; --accent: #1a56db; --accent2: #0e3fa8; --text: #111827; --muted: #6b7280; --border: #e5e7eb; --light-bg: #f3f6ff; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Header */
+  .header { background: var(--accent); color: #fff; padding: 0; }
+  .header-top { max-width: 1100px; margin: 0 auto; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .logo { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
+  .logo span { font-weight: 300; opacity: 0.8; }
+  .header-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; opacity: 0.8; }
+  .header-nav { background: rgba(0,0,0,0.15); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0.5rem 2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
+  .nav-inner a { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.75); }
+  .nav-inner a:hover { color: #fff; }
+
+  /* Main */
+  .main { max-width: 1100px; margin: 2rem auto; padding: 0 2rem 3rem; }
+
+  /* Stat bar */
+  .stat-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 1rem 1.25rem; }
+  .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); font-family: 'IBM Plex Mono', monospace; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; border-bottom: 2px solid var(--border); padding-bottom: 2.5rem; margin-bottom: 2.5rem; }
+  .hero-eyebrow { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.6rem; font-family: 'IBM Plex Mono', monospace; }
+  .hero-title { font-size: 2rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 0.75rem; cursor: pointer; }
+  .hero-title:hover { color: var(--accent); }
+  .hero-tldr { background: var(--light-bg); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin-bottom: 0.75rem; }
+  .hero-tldr-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.3rem; font-family: 'IBM Plex Mono', monospace; }
+  .hero-tldr-text { font-size: 0.85rem; color: #374151; font-weight: 500; }
+  .hero-body { font-size: 0.88rem; color: #4b5563; }
+  .hero-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--muted); margin-top: 0.75rem; }
+  .hero-image img { width: 100%; height: 260px; object-fit: cover; border-radius: 4px; }
+  .implications { background: var(--light-bg); border: 1px solid var(--border); padding: 1.25rem; margin-top: 1.25rem; }
+  .impl-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.5rem; font-family: 'IBM Plex Mono', monospace; }
+  .impl-item { font-size: 0.82rem; color: #374151; padding: 0.25rem 0; border-bottom: 1px solid var(--border); }
+  .impl-item:last-child { border-bottom: none; }
+  .impl-item::before { content: "→ "; color: var(--accent); font-weight: 700; }
+  .read-more { font-size: 0.72rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; font-family: 'IBM Plex Mono', monospace; }
+
+  /* Section */
+  .section-head { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .feed { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem; }
+  .article { display: grid; grid-template-columns: 1fr 200px; gap: 2rem; background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s; }
+  .article:hover { border-color: var(--accent); }
+  .article-eyebrow { font-size: 0.63rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.4rem; font-family: 'IBM Plex Mono', monospace; }
+  .article-title { font-size: 1.1rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+  .article-body { font-size: 0.84rem; color: #4b5563; line-height: 1.6; }
+  .article-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 0.5rem; }
+  .article-aside { background: var(--light-bg); padding: 1rem; border-radius: 3px; display: flex; flex-direction: column; justify-content: center; }
+  .aside-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.4rem; font-family: 'IBM Plex Mono', monospace; }
+  .aside-item { font-size: 0.76rem; color: #374151; padding: 0.2rem 0; font-weight: 500; }
+  .aside-item::before { content: "• "; color: var(--accent); }
+
+  footer { background: #111827; color: #9ca3af; padding: 2rem; text-align: center; font-size: 0.75rem; }
+  .footer-logo { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; justify-content: center; align-items: center; padding: 2rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); max-width: 720px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 2.5rem; position: relative; border-radius: 4px; }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--muted); cursor: pointer; background: none; border: 1px solid var(--border); padding: 0.2rem 0.5rem; }
+  .modal-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.5rem; }
+  .modal-title { font-size: 1.7rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .modal-tldr { background: var(--light-bg); border-left: 3px solid var(--accent); padding: 0.7rem 1rem; margin-bottom: 0.75rem; }
+  .modal-tldr-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.25rem; font-family: 'IBM Plex Mono', monospace; }
+  .modal-tldr-text { font-size: 0.83rem; color: #374151; font-weight: 500; }
+  .modal-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 1.2rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .modal-body p { font-size: 0.88rem; color: #374151; line-height: 1.8; margin-bottom: 0.85rem; }
+  .modal-impl { background: var(--light-bg); border: 1px solid var(--border); padding: 1rem 1.25rem; margin-top: 1rem; }
+
+  @media(max-width:900px){ .hero{grid-template-columns:1fr;} .hero-image{order:-1;} .stat-bar{grid-template-columns:1fr 1fr;} .article{grid-template-columns:1fr;} .article-aside{display:none;} }
+  @media(max-width:600px){ .stat-bar{grid-template-columns:1fr;} .hero-title{font-size:1.5rem;} }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-top">
+    <div class="logo">Founders <span>Dispatch</span></div>
+    <div class="header-date">Wednesday, April 8, 2026</div>
+  </div>
+  <div class="header-nav">
+    <div class="nav-inner">
+      <a href="#">Market Intelligence</a>
+      <a href="#">Fundraising</a>
+      <a href="#">Infrastructure</a>
+      <a href="#">Regulatory</a>
+      <a href="#">Product Strategy</a>
+    </div>
+  </div>
+</header>
+<main class="main">
+  <div class="stat-bar">
+    <div class="stat">
+      <div class="stat-value">$297B</div>
+      <div class="stat-label">Q1 2026 Startup Funding</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">$852B</div>
+      <div class="stat-label">OpenAI Valuation</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">100x</div>
+      <div class="stat-label">Potential AI Energy Reduction</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">3.5GW</div>
+      <div class="stat-label">Anthropic Dedicated Compute</div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div>
+      <div class="hero-eyebrow">Lead Story // Efficiency & Infrastructure</div>
+      <div class="hero-title" onclick="openModal('m1')">Neurosymbolic AI Could Cut Energy Use 100x — What This Means for Your Compute Moat</div>
+      <div class="hero-tldr">
+        <div class="hero-tldr-label">TL;DR for Founders</div>
+        <div class="hero-tldr-text">The compute arms race may be less durable as a moat than everyone assumes. Efficiency breakthroughs create openings for leaner players.</div>
+      </div>
+      <div class="hero-body">Researchers demonstrated a hybrid neural-symbolic architecture achieving 100x energy efficiency gains with improved accuracy. If this scales commercially, it compresses the infrastructure advantage held by well-capitalized incumbents — and potentially reopens competition at capability levels that currently require massive compute.</div>
+      <div class="hero-meta">April 5, 2026 // ScienceDaily // <span class="read-more" onclick="openModal('m1')">Full Analysis →</span></div>
+      <div class="implications">
+        <div class="impl-title">Founder Implications</div>
+        <div class="impl-item">Compute-as-moat is a weaker long-term bet than product-as-moat</div>
+        <div class="impl-item">Watch for efficiency-focused model providers emerging in 12-18 months</div>
+        <div class="impl-item">Edge AI deployment economics could shift dramatically</div>
+      </div>
+    </div>
+    <div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" alt="AI infrastructure">
+      </div>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <span>Dispatches</span>
+    <span style="font-size:0.62rem;">4 stories · April 8, 2026</span>
+  </div>
+  <div class="feed">
+    <div class="article" onclick="openModal('m2')">
+      <div>
+        <div class="article-eyebrow">Capital Markets // IPO Watch</div>
+        <div class="article-title">OpenAI at $852B: The IPO That Will Benchmark the Entire AI Sector</div>
+        <div class="article-body">$122B raised, $25B annualized revenue, and early IPO steps underway. The public offering will set valuation comps for every AI company raising in 2026-2027 — and test whether public markets accept AI-native companies at SaaS multiples.</div>
+        <div class="article-meta">April 6, 2026 // CNBC</div>
+      </div>
+      <div class="article-aside">
+        <div class="aside-label">Key Metrics</div>
+        <div class="aside-item">$25B ARR</div>
+        <div class="aside-item">$852B valuation</div>
+        <div class="aside-item">$122B raised</div>
+        <div class="aside-item">IPO: ~late 2026</div>
+      </div>
+    </div>
+    <div class="article" onclick="openModal('m3')">
+      <div>
+        <div class="article-eyebrow">Venture Capital // Market Conditions</div>
+        <div class="article-title">Q1 2026 Funding at $297B: The Best and Worst Time to Be Raising</div>
+        <div class="article-body">Record capital deployment means high valuations but also increased noise. AI-native companies are raising in weeks; application-layer plays are getting harder scrutiny on unit economics and differentiation.</div>
+        <div class="article-meta">April 6, 2026 // BC Technology</div>
+      </div>
+      <div class="article-aside">
+        <div class="aside-label">Market Signal</div>
+        <div class="aside-item">$297B total Q1</div>
+        <div class="aside-item">2.5x QoQ growth</div>
+        <div class="aside-item">AI dominated</div>
+        <div class="aside-item">Infra leads deals</div>
+      </div>
+    </div>
+    <div class="article" onclick="openModal('m4')">
+      <div>
+        <div class="article-eyebrow">Infrastructure // Competitive Strategy</div>
+        <div class="article-title">Broadcom-Anthropic Deal: The Infrastructure Stratification Accelerates</div>
+        <div class="article-body">3.5 gigawatts of dedicated compute for Anthropic via Google's infrastructure. Custom silicon deals closing the access gap between top-tier labs and everyone else. Founders need a clear-eyed view of where they sit in this stack.</div>
+        <div class="article-meta">April 6, 2026 // CNBC</div>
+      </div>
+      <div class="article-aside">
+        <div class="aside-label">Infrastructure Gap</div>
+        <div class="aside-item">3.5GW dedicated</div>
+        <div class="aside-item">Custom ASICs</div>
+        <div class="aside-item">API access: retail</div>
+        <div class="aside-item">Moat: physics-based</div>
+      </div>
+    </div>
+    <div class="article" onclick="openModal('m5')">
+      <div>
+        <div class="article-eyebrow">Regulatory // Compliance Strategy</div>
+        <div class="article-title">NIST AI Agent Standards: Build Compliant Now or Retrofit Later</div>
+        <div class="article-body">NIST is formalizing security standards for autonomous AI agents. Enterprise sales cycles and government procurement are increasingly gating on compliance posture. Early movers gain procurement advantage in regulated industries.</div>
+        <div class="article-meta">April 2026 // CNBC</div>
+      </div>
+      <div class="article-aside">
+        <div class="aside-label">Action Items</div>
+        <div class="aside-item">Audit agent perms</div>
+        <div class="aside-item">Map API access</div>
+        <div class="aside-item">Track NIST drafts</div>
+        <div class="aside-item">Enterprise advantage</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="footer-logo">Founders Dispatch</div>
+  <p>Market intelligence for builders, operators, and investors.</p>
+  <p style="margin-top:0.4rem;">© 2026 Founders Dispatch // Wednesday, April 8, 2026</p>
+</footer>
+
+<div class="modal-overlay" id="m1">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m1')">✕ close</button>
+    <div class="modal-eyebrow">Efficiency & Infrastructure</div>
+    <div class="modal-title">Neurosymbolic AI Could Cut Energy Use 100x — What This Means for Your Compute Moat</div>
+    <div class="modal-tldr">
+      <div class="modal-tldr-label">TL;DR</div>
+      <div class="modal-tldr-text">Compute is a weaker long-term moat than assumed. Efficiency breakthroughs systematically erode scale advantages and open space for leaner competitors.</div>
+    </div>
+    <div class="modal-meta">April 5, 2026 // ScienceDaily // Infrastructure Analysis</div>
+    <div class="modal-body">
+      <p>This week's research publication on neurosymbolic AI efficiency deserves serious attention from founders who have been making product and fundraising decisions based on the assumption that compute scale is a durable competitive advantage. The research demonstrates that combining neural networks with rule-based symbolic reasoning can achieve up to 100x reduction in energy consumption with improved accuracy. If this generalizes to production deployment — and that remains a real if — it fundamentally restructures the economics of AI development.</p>
+      <p>The business implication for founders is this: the companies currently investing in massive compute buildouts are betting that efficiency gains will remain incremental. If instead efficiency gains are step-function, the ROI on that infrastructure deteriorates faster than the models powering it. More importantly for startup strategy, the current era's primary barrier to entry — that competitive AI requires infrastructure that only the most capitalized players can afford — becomes temporally bounded. The window for building differentiated AI products may be larger than it currently appears.</p>
+      <p>Practical strategic implications: first, if you're building on top of foundation models, maintain provider agnosticism — efficiency leaders may not be today's leaders. Second, if your product roadmap includes on-device or edge AI capabilities, watch this research carefully; the compute requirements for powerful local models could drop dramatically within two to three years. Third, if your fundraising narrative leans heavily on "we need massive compute to compete," stress-test that assumption. The investors most likely to catch you later are the ones asking about efficiency moats, not scale moats.</p>
+    </div>
+    <div class="modal-impl">
+      <div class="impl-title">Strategic Actions</div>
+      <div class="impl-item">Build model-agnostic architectures to capture efficiency improvements when they land</div>
+      <div class="impl-item">Revisit edge AI roadmap timeline with updated efficiency assumptions</div>
+      <div class="impl-item">Frame moat as data + distribution + domain expertise, not raw compute</div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m2">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m2')">✕ close</button>
+    <div class="modal-eyebrow">Capital Markets // IPO Watch</div>
+    <div class="modal-title">OpenAI at $852B: The IPO That Will Benchmark the Entire AI Sector</div>
+    <div class="modal-tldr">
+      <div class="modal-tldr-label">TL;DR</div>
+      <div class="modal-tldr-text">OpenAI's IPO will set valuation comps for every AI company raising post-2026. The pricing outcome — up or down from $852B — flows directly through to your next round.</div>
+    </div>
+    <div class="modal-meta">April 6, 2026 // CNBC // Capital Markets</div>
+    <div class="modal-body">
+      <p>OpenAI has surpassed $25 billion in annualized revenue, closed a $122 billion funding round at an $852 billion valuation, and is taking preliminary steps toward a public offering potentially in late 2026. The revenue trajectory is real: enterprise contract momentum, API usage growth, and consumer subscription penetration are all heading in the right direction. This is not a zero-revenue pre-IPO story; it's a company with a credible revenue foundation seeking public market validation.</p>
+      <p>For founders and early-stage investors, the strategic implications of the IPO are as important as the company's own outcome. OpenAI's public valuation will become the primary comparable for every AI company raising growth rounds in 2026 and 2027. If the IPO prices above its private valuation, it validates the premium multiples the private market has been applying to AI-native companies and likely extends the favorable fundraising environment. If it prices at a significant discount, it triggers a repricing cascade that affects late-stage AI companies first and filters down to earlier-stage rounds within two to three quarters.</p>
+      <p>For operators building on OpenAI's API: the IPO creates both continuity signals and risk signals simultaneously. A publicly traded OpenAI has stronger incentives to maintain enterprise contract reliability and API pricing stability — public company commitments to customers carry reputational weight that private company commitments don't. It also creates shareholder pressure for margin expansion over time, which may eventually translate to pricing dynamics that favor alternative providers. Monitor the S-1 cost structure disclosures closely when they are filed; they will reveal the unit economics of AI infrastructure in ways that inform every application-layer company's margin modeling.</p>
+    </div>
+    <div class="modal-impl">
+      <div class="impl-title">Watch For</div>
+      <div class="impl-item">IPO filing S-1: contains infrastructure cost data relevant to your margin model</div>
+      <div class="impl-item">Pricing day premium/discount to $852B: determines your next-round comp</div>
+      <div class="impl-item">Lock-up expiration volatility: may create 6-month turbulence in AI valuations</div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m3">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m3')">✕ close</button>
+    <div class="modal-eyebrow">Venture Capital // Market Conditions</div>
+    <div class="modal-title">Q1 2026 Funding at $297B: The Best and Worst Time to Be Raising</div>
+    <div class="modal-tldr">
+      <div class="modal-tldr-label">TL;DR</div>
+      <div class="modal-tldr-text">Record capital is chasing AI deals. Founders with AI-native products have leverage; application-layer plays face sharper unit economics scrutiny despite available capital.</div>
+    </div>
+    <div class="modal-meta">April 6, 2026 // BC Technology // VC Market</div>
+    <div class="modal-body">
+      <p>Global startup funding reached $297 billion in Q1 2026, a 2.5x increase over the prior quarter's $118 billion. The figure is historically unprecedented and reflects a concentrated bet by institutional capital on AI as the primary technology cycle of the decade. Infrastructure and foundational model companies captured the largest share, with OpenAI's $122 billion round as the headline. Application-layer companies also benefited from improved appetite, particularly those with demonstrable enterprise contracts and clear paths to product-market fit.</p>
+      <p>The practical implications for founders in fundraising mode are nuanced. On the positive side: LP capital has been deployed into AI-focused funds at record rates, meaning GPs have capital and deployment pressure. Terms for strong AI-native companies have improved; competitive rounds are moving faster. On the challenging side: the bar for "interesting AI company" has risen significantly as the volume of pitches has increased proportionally with the capital. Differentiation between "uses AI" and "built on AI in a defensible way" is now a primary screening criterion for most growth-stage funds.</p>
+      <p>For founders thinking about timing: the current environment is favorable for raising but creates a dangerous anchoring trap. Companies that raise at Q1 2026 valuations are setting expectations for the next round that require significant growth to justify at potentially more moderate market conditions. The fundraising environment a year from now may be similar, better, or materially worse — AI funding cycles have historically been more volatile than general tech cycles. Raise enough to reach multiple milestones, not just the next one, and build unit economics that work at reasonable growth rates, not just at the top of the market curve.</p>
+    </div>
+    <div class="modal-impl">
+      <div class="impl-title">Fundraising Playbook</div>
+      <div class="impl-item">Raise for 24+ months runway given potential market normalization</div>
+      <div class="impl-item">Lead with enterprise contracts and retention data, not product demos</div>
+      <div class="impl-item">Prepare for unit economics deep-dives; VCs are probing AI gross margins</div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m4">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m4')">✕ close</button>
+    <div class="modal-eyebrow">Infrastructure // Competitive Strategy</div>
+    <div class="modal-title">Broadcom-Anthropic Deal: The Infrastructure Stratification Accelerates</div>
+    <div class="modal-tldr">
+      <div class="modal-tldr-label">TL;DR</div>
+      <div class="modal-tldr-text">Custom compute deals create physics-based moats that application-layer founders can't replicate. Your competitive strategy needs to account for permanent infrastructure asymmetry.</div>
+    </div>
+    <div class="modal-meta">April 6, 2026 // CNBC // Infrastructure</div>
+    <div class="modal-body">
+      <p>Broadcom has agreed to produce custom AI chip designs for Google and secured an expanded deal with Anthropic that provides approximately 3.5 gigawatts of dedicated AI compute capacity powered by Google's processor infrastructure. The strategic architecture of this deal is worth unpacking: it's not just a hardware purchase, it's a vertically integrated supply chain for AI inference and training capacity that creates advantages across cost, performance, and supply security simultaneously. Anthropic is effectively co-developing infrastructure with Google rather than renting it.</p>
+      <p>For founders building application-layer products, this dynamic has a specific implication: the performance and cost curves of the top AI labs are going to diverge from cloud-accessible AI in ways that create both opportunities and risks. Risks: if your product is competing on raw AI capability (speed, quality, cost) against products built by labs with custom silicon advantages, that is a fight you cannot win at the infrastructure layer. Opportunities: the existence of a tiered infrastructure landscape means there are capability niches — specialized domains, specific data types, regulatory-compliant environments — where the generalist labs' raw capability advantage doesn't translate to product advantage.</p>
+      <p>The actionable strategic frame for founders: stop competing on AI capability in the abstract and compete on AI capability applied to specific, high-value contexts where you have data or domain advantages the general-purpose labs lack. Proprietary data, domain expertise, and distribution are the moats that survive infrastructure stratification. A company with three years of specialized medical imaging data and a trained radiologist advisory board has an AI advantage that 3.5 gigawatts of generic compute cannot replicate. That's the frame for where to build.</p>
+    </div>
+    <div class="modal-impl">
+      <div class="impl-title">Strategic Framework</div>
+      <div class="impl-item">Identify your proprietary data advantage — that's your real moat vs. compute-rich incumbents</div>
+      <div class="impl-item">Build domain expertise and distribution that generic AI can't commoditize</div>
+      <div class="impl-item">Consider API provider diversification given long-term pricing uncertainty</div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m5">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m5')">✕ close</button>
+    <div class="modal-eyebrow">Regulatory // Compliance Strategy</div>
+    <div class="modal-title">NIST AI Agent Standards: Build Compliant Now or Retrofit Later</div>
+    <div class="modal-tldr">
+      <div class="modal-tldr-label">TL;DR</div>
+      <div class="modal-tldr-text">NIST standards for AI agents will eventually gate enterprise and government procurement. Proactive compliance architecture is a sales accelerant in regulated industries.</div>
+    </div>
+    <div class="modal-meta">April 2026 // CNBC // Regulatory</div>
+    <div class="modal-body">
+      <p>The U.S. National Institute of Standards and Technology has launched a formal initiative to develop security standards for AI agents — systems capable of autonomously taking multi-step actions via APIs without human sign-off on each step. The initiative addresses a real and growing security gap: autonomous AI agents create attack surfaces (prompt injection, privilege escalation, supply chain vulnerabilities in underlying models) that existing cybersecurity frameworks were not designed to handle. NIST's involvement signals regulatory intent to treat AI agents as enterprise infrastructure requiring formal governance.</p>
+      <p>For founders building AI agent products, the compliance trajectory is now relatively clear even if the timeline is not. NIST standards, once published, typically flow into FedRAMP requirements (government procurement), SOC 2 extensions (enterprise security reviews), and sector-specific regulations in healthcare, finance, and legal. Companies that begin designing for NIST alignment now will find the formal compliance certification process materially faster and cheaper than companies that retrofit security architectures after the standards are finalized. The delta is typically 6-12 months and several hundred thousand dollars in engineering and audit costs.</p>
+      <p>The commercial angle: in regulated industries, demonstrable NIST-aligned security architecture for AI agents is already becoming a procurement differentiator even before formal standards are published. Enterprise security teams are using the NIST AI Risk Management Framework as a due diligence checklist. Companies that can point to concrete implementations of agent permission scoping, audit logging, human-in-the-loop controls, and model supply chain documentation are closing enterprise deals faster. This is not compliance theater — it's a genuine product quality signal that sophisticated buyers recognize. Build it properly and use it commercially.</p>
+    </div>
+    <div class="modal-impl">
+      <div class="impl-title">Compliance Roadmap</div>
+      <div class="impl-item">Implement agent permission scoping and audit logging in current sprint</div>
+      <div class="impl-item">Subscribe to NIST AI standards draft notifications for early review access</div>
+      <div class="impl-item">Add "NIST AI Agent Alignment" to enterprise sales security questionnaire responses</div>
+    </div>
+  </div>
+</div>
+<script>
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',function(e){if(e.target===el){el.classList.remove('open');document.body.style.overflow='';}});});
+</script>
+</body>
+</html>
