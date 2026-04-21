@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founders Dispatch</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #fafaf8; --bg2: #f3f3ef; --ink: #111; --ink-mid: #333; --ink-light: #555; --ink-muted: #888; --accent: #1a56db; --accent-dark: #1340b0; --accent-bg: #eef2fd; --border: #e0deda; --tag-green: #059669; --tag-orange: #d97706; --tag-red: #dc2626; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* Header */
+  .site-header { background: var(--ink); color: white; padding: 1.2rem 1.5rem; }
+  .header-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; flex-direction: column; }
+  .logo-name { font-family: 'Manrope', sans-serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 800; letter-spacing: -0.03em; color: white; }
+  .logo-tag { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.1rem; }
+  .header-right { text-align: right; }
+  .header-date { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; }
+  .header-edition { font-size: 0.8rem; font-weight: 600; color: #60a5fa; }
+
+  /* Metrics bar */
+  .metrics-bar { background: var(--accent-bg); border-bottom: 1px solid #c7d7f9; padding: 0.7rem 1.5rem; }
+  .metrics-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 2rem; overflow-x: auto; }
+  .metric { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+  .metric-label { font-size: 0.65rem; color: var(--ink-muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+  .metric-val { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
+  .metric-delta { font-size: 0.65rem; color: var(--tag-green); font-weight: 600; }
+  .metric-sep { color: var(--border); font-size: 0.8rem; }
+
+  /* Nav */
+  .section-nav { border-bottom: 1px solid var(--border); padding: 0 1.5rem; }
+  .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 0; }
+  .nav-item { font-size: 0.72rem; font-weight: 500; color: var(--ink-muted); letter-spacing: 0.05em; text-transform: uppercase; padding: 0.7rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .nav-item:hover { color: var(--accent); }
+  .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* Hero */
+  .hero { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 3rem; align-items: start; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--accent-bg); color: var(--accent); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; margin-bottom: 1rem; }
+  .hero-title { font-family: 'Manrope', sans-serif; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 0.8rem; color: var(--ink); }
+  .hero-sub { font-size: 1rem; line-height: 1.7; color: var(--ink-light); margin-bottom: 1rem; }
+  .hero-byline { font-size: 0.7rem; color: var(--ink-muted); letter-spacing: 0.04em; margin-bottom: 1.2rem; }
+  .hero-summary { background: var(--bg2); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin-bottom: 1.2rem; }
+  .hero-summary h4 { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+  .hero-summary ul { list-style: none; }
+  .hero-summary li { font-size: 0.85rem; line-height: 1.6; color: var(--ink-mid); padding: 0.2rem 0; display: flex; gap: 0.5rem; }
+  .hero-summary li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 0.05rem; }
+  .read-btn { display: inline-block; background: var(--accent); color: white; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.6rem 1.3rem; cursor: pointer; border: none; transition: background 0.15s; }
+  .read-btn:hover { background: var(--accent-dark); }
+  .hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .hero-img-caption { font-size: 0.65rem; color: var(--ink-muted); padding-top: 0.4rem; }
+
+  /* Feed */
+  .feed-section { padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .feed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  .feed-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); }
+  .feed-title span { color: var(--accent); }
+  .article-row { display: grid; grid-template-columns: auto 1fr auto; gap: 1.2rem; align-items: start; padding: 1.2rem 0; border-top: 1px solid var(--border); cursor: pointer; }
+  .article-row:hover .article-row-title { color: var(--accent); }
+  .article-row-img { width: 110px; height: 75px; object-fit: cover; flex-shrink: 0; }
+  .article-row-tag { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.4rem; border-radius: 2px; margin-bottom: 0.4rem; }
+  .tag-green { background: #d1fae5; color: var(--tag-green); }
+  .tag-orange { background: #fef3c7; color: var(--tag-orange); }
+  .tag-red { background: #fee2e2; color: var(--tag-red); }
+  .tag-blue { background: var(--accent-bg); color: var(--accent); }
+  .article-row-title { font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; margin-bottom: 0.4rem; color: var(--ink); transition: color 0.15s; }
+  .article-row-deck { font-size: 0.83rem; line-height: 1.6; color: var(--ink-light); }
+  .article-row-meta { font-size: 0.65rem; color: var(--ink-muted); white-space: nowrap; text-align: right; }
+
+  /* Footer */
+  footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 2rem 1.5rem; margin-top: 2rem; }
+  footer .f-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  footer .f-logo { font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 800; color: white; letter-spacing: -0.02em; }
+  footer p { font-size: 0.7rem; line-height: 1.8; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; overflow-y: auto; padding: 2rem 1rem; }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+  .modal-box { background: var(--bg); max-width: 760px; width: 100%; position: relative; margin: auto; }
+  .modal-header { background: var(--ink); padding: 1.5rem 2rem; position: relative; }
+  .modal-close { position: absolute; top: 1rem; right: 1.2rem; font-size: 1rem; cursor: pointer; color: rgba(255,255,255,0.5); background: none; border: none; font-weight: 300; }
+  .modal-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #60a5fa; margin-bottom: 0.6rem; }
+  .modal-title { font-family: 'Manrope', sans-serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: white; margin-bottom: 0.5rem; }
+  .modal-sub { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  .modal-body { padding: 2rem; }
+  .modal-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 1.5rem; }
+  .modal-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; background: var(--bg2); padding: 1rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+  .kpi { text-align: center; }
+  .kpi-val { font-family: 'Manrope', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--accent); display: block; }
+  .kpi-label { font-size: 0.62rem; color: var(--ink-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .modal-body p { font-size: 0.93rem; line-height: 1.85; color: var(--ink-mid); margin-bottom: 1rem; }
+  .modal-body strong { color: var(--ink); }
+  .modal-takeaway { background: var(--accent-bg); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin-top: 1.5rem; }
+  .modal-takeaway h4 { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .modal-takeaway p { font-size: 0.85rem; color: var(--ink-mid); margin: 0; }
+
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .metrics-inner { gap: 1rem; }
+    .article-row { grid-template-columns: 1fr; }
+    .article-row-img { width: 100%; height: 180px; }
+    .modal-box { margin: 0; }
+    .modal-header { padding: 1.2rem; }
+    .modal-body { padding: 1.2rem; }
+    .modal-kpis { grid-template-columns: 1fr 1fr; }
+    footer .f-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-name">Founders Dispatch</span>
+      <span class="logo-tag">Signal for builders & investors</span>
+    </div>
+    <div class="header-right">
+      <div class="header-date">Tuesday, April 21, 2026</div>
+      <div class="header-edition">Daily Intelligence Brief</div>
+    </div>
+  </div>
+</header>
+
+<div class="metrics-bar">
+  <div class="metrics-inner">
+    <div class="metric"><span class="metric-label">Q1 VC Deployed</span><span class="metric-val">$300B</span><span class="metric-delta">▲ 2x YoY</span></div>
+    <span class="metric-sep">|</span>
+    <div class="metric"><span class="metric-label">Cursor ARR</span><span class="metric-val">$2B</span><span class="metric-delta">▲ 3yr from $0</span></div>
+    <span class="metric-sep">|</span>
+    <div class="metric"><span class="metric-label">Cursor Valuation</span><span class="metric-val">$50B+</span><span class="metric-delta">▲ 25x ARR</span></div>
+    <span class="metric-sep">|</span>
+    <div class="metric"><span class="metric-label">AI Coding Market</span><span class="metric-val">$12.8B</span><span class="metric-delta">▲ 150% YoY</span></div>
+    <span class="metric-sep">|</span>
+    <div class="metric"><span class="metric-label">OpenAI Ad Target '30</span><span class="metric-val">$100B</span></div>
+  </div>
+</div>
+
+<nav class="section-nav">
+  <div class="nav-inner">
+    <span class="nav-item active">Funding</span>
+    <span class="nav-item">Strategy</span>
+    <span class="nav-item">AI Models</span>
+    <span class="nav-item">Markets</span>
+    <span class="nav-item">Geopolitics</span>
+  </div>
+</nav>
+
+<main>
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-tag">🔥 Lead Story &nbsp;·&nbsp; Series E+ Funding</span>
+        <h1 class="hero-title">Cursor at $50B: What the AI Coding Flywheel Means for Every Founder Building on Dev Tools</h1>
+        <p class="hero-sub">Anysphere's $2B raise at a $50B+ valuation isn't just a funding story — it's a signal about application-layer moats, developer workflow lock-in, and what happens when you own the coding interface for 70% of the Fortune 1,000.</p>
+        <p class="hero-byline">Founders Dispatch &nbsp;·&nbsp; April 21, 2026 &nbsp;·&nbsp; 5 min read</p>
+        <div class="hero-summary">
+          <h4>Key Takeaways for Founders</h4>
+          <ul>
+            <li>$2B ARR in 36 months: fastest-growing enterprise software ever recorded</li>
+            <li>25x revenue multiple signals market is pricing in coding workflow displacement</li>
+            <li>Nvidia strategic entry = downstream compute bet, not altruism</li>
+            <li>Enterprise lock-in at 70% Fortune 1,000 creates defensible moat before competitors scale</li>
+          </ul>
+        </div>
+        <button class="read-btn" onclick="openModal('modal-cursor')">Read Full Analysis →</button>
+      </div>
+      <div>
+        <img class="hero-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Developer tools">
+        <p class="hero-img-caption">AI coding tools generated $12.8B in revenue in 2026 — more than double 2024.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feed -->
+  <section class="feed-section">
+    <div class="feed-header">
+      <span class="feed-title">Today's <span>Signal</span> — 4 more dispatches</span>
+    </div>
+
+    <div class="article-row" onclick="openModal('modal-meta')">
+      <img class="article-row-img" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&q=80" alt="Meta AI">
+      <div>
+        <span class="article-row-tag tag-orange">Platform Strategy</span>
+        <h3 class="article-row-title">Meta's Muse Spark Ends the Open Source Era — And Reveals the Real Monetization Playbook</h3>
+        <p class="article-row-deck">The pivot to proprietary AI gives Meta a data flywheel across 3B daily users. For founders: distribution is the new moat, and Meta just walled off the biggest distribution channel with a frontier model.</p>
+      </div>
+      <div class="article-row-meta">Apr 8, 2026<br>4 min</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('modal-deepseek')">
+      <img class="article-row-img" src="https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?w=400&q=80" alt="AI chip">
+      <div>
+        <span class="article-row-tag tag-red">Competitive Risk</span>
+        <h3 class="article-row-title">DeepSeek V4's 1T-Parameter Open Model Is a Commodity Risk for Every AI Wrapper Business</h3>
+        <p class="article-row-deck">A free, Apache-licensed, frontier-quality model changes the floor price for AI capabilities. Founders should stress-test: what does your moat look like when the underlying model is free and open?</p>
+      </div>
+      <div class="article-row-meta">Apr 21, 2026<br>4 min</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('modal-openai')">
+      <img class="article-row-img" src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=400&q=80" alt="Ads">
+      <div>
+        <span class="article-row-tag tag-blue">Distribution</span>
+        <h3 class="article-row-title">OpenAI's $100B Ad Target Creates a New Distribution Channel — And a New Competitor for Attention</h3>
+        <p class="article-row-deck">As OpenAI monetizes the answer layer, the implication for founders is clear: organic AI-driven discovery is becoming a paid channel. LLM Optimization is the new SEO — budget accordingly.</p>
+      </div>
+      <div class="article-row-meta">Apr 21, 2026<br>4 min</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('modal-vc')">
+      <img class="article-row-img" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=80" alt="VC data">
+      <div>
+        <span class="article-row-tag tag-green">Fundraising</span>
+        <h3 class="article-row-title">$300B Q1 Record, But 80% of Founders Are Missing the Wave — PwC Data Shows the Narrowing Funnel</h3>
+        <p class="article-row-deck">Record venture deployment doesn't mean broad access. PwC's 2026 AI study shows concentration accelerating. For founders: demonstrate proprietary data advantages and unit economics — the "AI story" alone no longer raises Series A.</p>
+      </div>
+      <div class="article-row-meta">Apr 21, 2026<br>4 min</div>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer>
+  <div class="f-inner">
+    <div>
+      <p class="f-logo">Founders Dispatch</p>
+      <p>Daily signal for founders, VCs, and operators navigating the AI era.</p>
+    </div>
+    <p>Published every weekday &nbsp;·&nbsp; © 2026 Founders Dispatch<br>All analysis reflects publicly available information. Not investment advice.</p>
+  </div>
+</footer>
+
+<!-- Modals -->
+<div id="modal-cursor" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-cursor')">✕ Close</button>
+      <p class="modal-tag">Series E+ Funding &nbsp;·&nbsp; April 21, 2026</p>
+      <h2 class="modal-title">Cursor at $50B: What the AI Coding Flywheel Means for Every Founder Building on Dev Tools</h2>
+      <p class="modal-sub">Anysphere's $2B raise at a $50B+ valuation reveals application-layer moats, developer workflow lock-in, and the economics of platform capture in AI tooling.</p>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Developer tools">
+      <div class="modal-kpis">
+        <div class="kpi"><span class="kpi-val">$2B</span><span class="kpi-label">ARR (Feb 2026)</span></div>
+        <div class="kpi"><span class="kpi-val">$50B+</span><span class="kpi-label">Pre-money valuation</span></div>
+        <div class="kpi"><span class="kpi-val">70%</span><span class="kpi-label">Fortune 1,000 customers</span></div>
+      </div>
+      <p>Cursor's fundraising round — $2 billion at a $50B+ pre-money valuation, led by Thrive Capital and Andreessen Horowitz with Nvidia as a strategic investor — is a data point that demands interpretation beyond the headline. <strong>The revenue trajectory is the signal: $100M ARR in January 2025, $500M by June, $1B by November, $2B by February 2026.</strong> That's a doubling roughly every six months at a scale where most SaaS companies would be celebrating their first $100M. Analysts project $6B+ by end of 2026.</p>
+      <p>The 25x revenue multiple is not irrational — it's pricing in the platform capture thesis. Cursor has 70% of the Fortune 1,000 as customers. Enterprise sales cycles are sticky, switching costs are high (developers rebuild workflows around tools they use daily), and the network effects of shared codebases, team configurations and enterprise integrations create a defensible position that's hard to dislodge with a superior product alone. <strong>This is the classic enterprise SaaS moat, but applied to AI-first tooling at a moment when every engineering organization in the world is in a race to AI-augment their developer workflows.</strong></p>
+      <p>The strategic implication for founders: Nvidia's participation is more signal than dollars. Nvidia's strategic investments track with downstream compute consumption. The more effective Cursor becomes, the more GPU compute it requires to serve. This creates an interesting alignment of incentives — Cursor is incentivized to make the AI as capable as possible, which creates demand for the chips Nvidia sells. <strong>For founders building in AI tooling: the question is not whether to compete with Cursor, but whether your wedge creates the kind of workflow lock-in that commands enterprise multiples.</strong> Generic productivity tools will be commoditized. Workflow-critical platforms with integration depth will retain pricing power.</p>
+      <div class="modal-takeaway">
+        <h4>Founder Takeaway</h4>
+        <p>Cursor's moat is workflow lock-in + enterprise distribution, not model quality alone. Before building AI dev tools, map out how you capture the daily workflow and what switching costs you create. Revenue multiples will compress — but not for mission-critical tools embedded in engineering culture.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-meta" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-meta')">✕ Close</button>
+      <p class="modal-tag">Platform Strategy &nbsp;·&nbsp; April 8, 2026</p>
+      <h2 class="modal-title">Meta's Muse Spark Ends the Open Source Era — And Reveals the Real Monetization Playbook</h2>
+      <p class="modal-sub">The pivot to proprietary AI gives Meta a data flywheel across 3 billion daily users. For founders, distribution is the new moat — and Meta just walled it off.</p>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80" alt="Meta AI">
+      <div class="modal-kpis">
+        <div class="kpi"><span class="kpi-val">3B</span><span class="kpi-label">Daily active users</span></div>
+        <div class="kpi"><span class="kpi-val">$14B</span><span class="kpi-label">Alexandr Wang hire cost</span></div>
+        <div class="kpi"><span class="kpi-val">3</span><span class="kpi-label">Operating modes</span></div>
+      </div>
+      <p>Meta's Muse Spark is a closed-weight, natively multimodal AI model built by Meta Superintelligence Labs under Alexandr Wang, rolling out to WhatsApp, Instagram, Facebook, Messenger, and Meta's AI glasses. The model supports tool-use, visual chain-of-thought reasoning, and multi-agent orchestration in three modes — fast-response, standard reasoning, and a "Contemplating" mode using parallel agent squads for complex queries. <strong>The technical specs matter less than the strategic context: Meta now has a frontier model embedded in every daily touchpoint for 3 billion people.</strong></p>
+      <p>The open-source pivot reversal is the story for strategic analysis. Meta spent three years building developer goodwill with LLaMA releases. That goodwill was real — but so was the logic of ending it. <strong>An open-weight model running on your servers generates no data for Meta. A closed model running on Meta's infrastructure generates signal on every query.</strong> At the scale of Meta's user base, that signal is the most valuable advertising intelligence asset ever assembled. The $14 billion spent on Alexandr Wang is not a talent bet — it's an infrastructure investment in proprietary behavioral data generation.</p>
+      <p>For founders, there are two implications. First, <strong>any product that lives in the discovery or recommendation layer of Meta's platforms now has a more capable, deeply integrated competitor.</strong> If your product helps people find products, make decisions, or get advice via WhatsApp or Instagram, Muse Spark will increasingly handle that natively. Second, the Meta playbook — build open source to generate community trust, then close it when monetization is clear — is a model other platforms will follow. <strong>Founders relying on platform goodwill as a distribution strategy should build escape velocity before the benevolence window closes.</strong></p>
+      <div class="modal-takeaway">
+        <h4>Founder Takeaway</h4>
+        <p>Meta is turning its distribution into an AI moat. Any founder whose go-to-market relies on organic discovery within Meta's surfaces needs to model what happens when a frontier model answers those questions natively. Build owned channels or platform-agnostic distribution now.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-deepseek" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-deepseek')">✕ Close</button>
+      <p class="modal-tag">Competitive Risk &nbsp;·&nbsp; April 21, 2026</p>
+      <h2 class="modal-title">DeepSeek V4's 1T-Parameter Open Model Is a Commodity Risk for Every AI Wrapper Business</h2>
+      <p class="modal-sub">A free, Apache-licensed frontier model changes the floor price for AI capabilities. If the model is free, your moat had better be something else entirely.</p>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" src="https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?w=800&q=80" alt="AI chip">
+      <div class="modal-kpis">
+        <div class="kpi"><span class="kpi-val">1T</span><span class="kpi-label">Parameters (MoE)</span></div>
+        <div class="kpi"><span class="kpi-val">$0.30</span><span class="kpi-label">Per million tokens</span></div>
+        <div class="kpi"><span class="kpi-val">81%</span><span class="kpi-label">SWE-bench score</span></div>
+      </div>
+      <p>DeepSeek V4 is expected to launch before the end of April with one trillion parameters in a Mixture-of-Experts architecture, Apache 2.0 open-source license, one-million-token context window, native multimodal support (text, image, video), and inference priced at approximately $0.30 per million tokens. It runs entirely on Huawei Ascend 910C chips — China's domestically produced GPU alternative. <strong>At 81% on SWE-bench, it performs at the frontier tier of autonomous software engineering while costing a fraction of what Western models charge.</strong></p>
+      <p>The business implication for founders is direct: <strong>the commodity price of frontier AI capability is compressing faster than most founders modeled in their 2025 financial plans.</strong> If you built a business on the assumption that access to GPT-4 or Claude-level intelligence was a significant barrier to entry for competitors, DeepSeek V4 — and the trend it represents — is the principal risk to that thesis. The floor price for frontier-quality inference is now $0.30/MTok and declining. Your defensibility cannot be "we use a good model."</p>
+      <p>The geopolitical dimension has a secondary business implication: US export controls on AI chips have provoked Chinese labs into extraordinary efficiency innovation. That innovation compounds — each generation of DeepSeek models is more efficient than the last, and the architectural breakthroughs they develop are open-sourced and available to every competing lab globally. <strong>The practical result is that the cost of AI capability is in secular decline at a rate faster than cloud infrastructure costs declined in the 2010s.</strong> For founders, this means two things: your unit economics will improve if you're a consumer of AI, and your pricing power will compress if your differentiation is built on AI access rather than AI application to proprietary problems.</p>
+      <div class="modal-takeaway">
+        <h4>Founder Takeaway</h4>
+        <p>Stress-test your moat against a world where frontier-quality AI is free and open. If your defensibility collapses when the underlying model is commoditized, your competitive advantage is rented, not owned. Build on proprietary data, unique workflows, or distribution — not model access.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-openai" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-openai')">✕ Close</button>
+      <p class="modal-tag">Distribution &nbsp;·&nbsp; April 21, 2026</p>
+      <h2 class="modal-title">OpenAI's $100B Ad Target Creates a New Distribution Channel — And a New Competitor for Attention</h2>
+      <p class="modal-sub">As OpenAI monetizes the answer layer, organic AI-driven discovery becomes a paid channel. LLM Optimization is the new SEO — and the budget implications are material.</p>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=800&q=80" alt="Digital advertising">
+      <div class="modal-kpis">
+        <div class="kpi"><span class="kpi-val">$2.5B</span><span class="kpi-label">Projected ad revenue '26</span></div>
+        <div class="kpi"><span class="kpi-val">$100B</span><span class="kpi-label">Ad target by 2030</span></div>
+        <div class="kpi"><span class="kpi-val">3x</span><span class="kpi-label">vs YouTube '24 ad revenue</span></div>
+      </div>
+      <p>OpenAI is projecting $2.5 billion in advertising revenue for 2026 and is targeting $100 billion annually by 2030 — roughly three times YouTube's 2024 advertising revenue. The strategic logic is sound: ChatGPT has become a primary discovery and decision-support interface for millions of users. <strong>When people ask an AI "what CRM should I use" or "what's the best project management tool for a 20-person startup," that's a high-intent commercial query worth substantially more per interaction than a Google search.</strong> OpenAI is late to monetizing this, but the opportunity is real.</p>
+      <p>The go-to-market implication for founders is the more pressing concern. <strong>LLM Optimization — the practice of ensuring your product is recommended favorably by AI systems — is becoming a non-optional marketing discipline.</strong> In the Google era, this was SEO: structured data, backlinks, content optimization. In the AI era, it will involve a combination of content presence that AI systems index and weight, potential paid relationships with AI platforms, and product category positioning that aligns with how AI systems categorize and describe solutions. The playbook is still being written, but the direction is clear: organic AI-driven distribution will compete with paid, and budget allocation decisions made in 2026 will shape who wins the discovery game in 2028.</p>
+      <p>The second-order effect is on the information ecosystem founders rely on. <strong>If ChatGPT responses are influenced by advertiser relationships, the competitive intelligence you gather from AI systems becomes less reliable.</strong> "What are my competitors' weaknesses?" asked to an ad-supported AI risks returning an answer shaped by who paid more that month. This has implications for product research, competitive analysis, and customer discovery done through AI systems. Founders should diversify their intelligence sources — primary research, direct customer interviews, and non-AI-mediated data will retain premium value precisely because AI-mediated information is becoming commercially influenced.</p>
+      <div class="modal-takeaway">
+        <h4>Founder Takeaway</h4>
+        <p>Budget for LLM Optimization now — it will be a paid channel within 18 months. Additionally, AI-mediated competitive intelligence will degrade as advertising enters the answer layer. Double down on primary research and direct customer feedback loops that can't be gamed by an advertiser relationship.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-vc" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-vc')">✕ Close</button>
+      <p class="modal-tag">Fundraising &nbsp;·&nbsp; April 21, 2026</p>
+      <h2 class="modal-title">$300B Q1 Record, But 80% of Founders Are Missing the Wave — PwC Data Shows the Narrowing Funnel</h2>
+      <p class="modal-sub">Record venture deployment doesn't mean broad access. PwC's 2026 AI study shows concentration accelerating. The "AI story" alone no longer raises Series A.</p>
+    </div>
+    <div class="modal-body">
+      <img class="modal-img" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80" alt="VC data">
+      <div class="modal-kpis">
+        <div class="kpi"><span class="kpi-val">$300B</span><span class="kpi-label">Q1 2026 VC deployed</span></div>
+        <div class="kpi"><span class="kpi-val">75%</span><span class="kpi-label">Gains → top 20% firms</span></div>
+        <div class="kpi"><span class="kpi-val">2x</span><span class="kpi-label">vs Q1 2024</span></div>
+      </div>
+      <p>Q1 2026 was the largest venture capital quarter in recorded history at $300 billion deployed globally — more than double Q1 2024. The majority of that capital went to AI infrastructure (data centers, GPU clusters, networking), frontier AI labs, and a small number of application-layer companies with demonstrated product-market fit. <strong>The implication for founders in the middle of the market is that capital availability is not the bottleneck — capital selectivity is.</strong> LPs are demanding distributions before committing to new funds, which means GPs are under more pressure to back companies with clear paths to liquidity, not just TAM stories.</p>
+      <p>PwC's 2026 AI Performance Study adds the distribution context: 75% of AI's economic gains are being captured by 20% of companies. The characteristic shared by winning companies is that they are <strong>focused on growth rather than cost optimization</strong> — suggesting that AI is functioning as a revenue multiplier for companies with scale advantages rather than as a broad efficiency tool. This has direct implications for fundraising positioning: investors at the growth stage are asking for evidence of revenue acceleration from AI adoption, not cost savings. If your AI story is "we saved 30% on ops costs," that's a fine business outcome but it's not a venture-scale narrative in 2026.</p>
+      <p>The fundraising environment for founders outside the top tier has tightened in specific ways: bridge rounds are harder (LPs are scrutinizing continuation investments more carefully), seed valuations for AI-adjacent startups without differentiation have compressed from 2023 peaks, and the bar for Series A metrics has risen materially. <strong>A product generating $500K-$1M ARR with strong growth that would have priced at $15-20M post in 2022 is now expected to show $2M+ ARR and defensible retention before commanding comparable terms.</strong> The headline numbers mask a bifurcated market — extraordinary for exceptional companies with structural advantages, challenging for everything else.</p>
+      <div class="modal-takeaway">
+        <h4>Founder Takeaway</h4>
+        <p>Demonstrate proprietary data advantages, strong retention, and unit economics before going to Series A. The "AI story" is table stakes — the differentiation question is what only you can build. If your business would be replicated by a well-funded competitor with better model access, rethink the moat before raising.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  function closeOnOverlay(e,el) { if(e.target===el){ el.classList.remove('open'); document.body.style.overflow=''; } }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.querySelectorAll('.modal-overlay.open').forEach(m=>{ m.classList.remove('open'); document.body.style.overflow=''; }); } });
+</script>
+</body>
+</html>
