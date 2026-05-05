@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founders Dispatch — The Signal for Builders and Investors</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #fafaf8; --blue: #1a56db; --dark: #0f1117; --mid: #52525b; --light: #e4e4e7; --card: #ffffff; --accent: #dbeafe; }
+  body { background: var(--bg); color: var(--dark); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Header */
+  header { background: var(--dark); color: #fff; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: #fff; }
+  .logo span { color: #60a5fa; }
+  .header-meta { font-size: 12px; color: #94a3b8; letter-spacing: 0.04em; }
+  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #60a5fa; }
+
+  /* Hero */
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 5% 60px; }
+  .hero { background: var(--card); border: 1px solid var(--light); border-top: 3px solid var(--blue); padding: 36px 40px; margin-bottom: 28px; cursor: pointer; transition: box-shadow 0.2s; }
+  .hero:hover { box-shadow: 0 4px 20px rgba(26,86,219,0.12); }
+  .hero:hover .hero-title { color: var(--blue); }
+  .meta-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .pill { display: inline-block; background: var(--accent); color: var(--blue); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+  .pill.dark { background: var(--dark); color: #fff; }
+  .pill.orange { background: #fef3c7; color: #92400e; }
+  .pill.red { background: #fee2e2; color: #991b1b; }
+  .read-time { font-size: 11px; color: var(--mid); }
+  .hero-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; line-height: 1.25; margin-bottom: 12px; transition: color 0.2s; }
+  .hero-deck { font-size: 0.95rem; color: var(--mid); line-height: 1.65; margin-bottom: 20px; }
+
+  /* Signal box */
+  .signal-box { background: var(--accent); border-left: 3px solid var(--blue); padding: 14px 18px; margin-top: 16px; }
+  .signal-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+  .signal-text { font-size: 13px; color: var(--dark); line-height: 1.5; }
+
+  /* Articles feed */
+  .articles-feed { display: flex; flex-direction: column; gap: 20px; }
+  .article-row { background: var(--card); border: 1px solid var(--light); padding: 28px 32px; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+  .article-row:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-color: var(--blue); }
+  .article-row:hover .article-title { color: var(--blue); }
+  .article-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; line-height: 1.3; margin-bottom: 10px; transition: color 0.2s; }
+  .article-excerpt { font-size: 0.88rem; color: var(--mid); line-height: 1.6; margin-bottom: 14px; }
+  .data-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { border: 1px solid var(--light); padding: 4px 10px; font-size: 11px; font-weight: 500; color: var(--mid); white-space: nowrap; }
+  .chip strong { color: var(--dark); }
+  .article-number { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--light); line-height: 1; user-select: none; padding-top: 4px; }
+
+  /* Footer */
+  footer { background: var(--dark); color: #94a3b8; padding: 28px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: #fff; }
+  .footer-text { font-size: 11px; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,17,23,0.7); z-index: 1000; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--light); border-top: 3px solid var(--blue); max-width: 720px; width: 100%; padding: 48px 48px 40px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--mid); }
+  .modal-close:hover { color: var(--dark); }
+  .modal-pill { display: inline-block; background: var(--accent); color: var(--blue); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; margin-bottom: 14px; }
+  .modal-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; line-height: 1.25; margin-bottom: 12px; }
+  .modal-deck { font-size: 0.95rem; color: var(--mid); margin-bottom: 20px; }
+  .modal-signal { background: var(--accent); border-left: 3px solid var(--blue); padding: 14px 18px; margin: 20px 0; }
+  .modal-line { border: none; border-top: 1px solid var(--light); margin: 20px 0; }
+  .modal-body p { margin-bottom: 18px; line-height: 1.75; font-size: 0.93rem; color: #3f3f46; }
+  .modal-body p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 768px) {
+    .article-row { grid-template-columns: 1fr; }
+    .article-number { display: none; }
+    .hero { padding: 24px; }
+    .hero-title { font-size: 1.4rem; }
+    .modal { padding: 32px 20px 24px; }
+    .modal-title { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Founders <span>Dispatch</span></div>
+  <div class="header-meta">Tuesday, May 5, 2026 · 5 signals</div>
+  <div class="header-tag">The Signal for Builders &amp; Investors</div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <div class="hero" onclick="openModal('m1')">
+    <div class="meta-row">
+      <span class="pill dark">LEAD STORY</span>
+      <span class="pill red">POLICY</span>
+      <span class="read-time">7 min read</span>
+    </div>
+    <h2 class="hero-title">Pentagon's AI Military Contracts Signal Massive Government Market Opening — And Anthropic's Exclusion Is a Lesson in Negotiating With Governments</h2>
+    <p class="hero-deck">The DoD just signed classified AI agreements with OpenAI, Google, Microsoft, Amazon, Oracle, SpaceX, Nvidia, and Reflection. For founders, the strategic read is less about the news itself and more about what it reveals: federal AI procurement is real, it's large, and the dynamics are nothing like enterprise sales.</p>
+    <div class="signal-box">
+      <div class="signal-label">Founder Signal</div>
+      <div class="signal-text">Government AI is a massive untapped market but requires a completely different GTM playbook. Safety posture can be a competitive advantage OR a disqualifier depending on the buyer. Anthropic's case study is required reading.</div>
+    </div>
+  </div>
+
+  <!-- Articles feed -->
+  <div class="articles-feed">
+    <div class="article-row" onclick="openModal('m2')">
+      <div>
+        <div class="meta-row"><span class="pill">AI MODELS</span><span class="pill orange">DISTRIBUTION</span><span class="read-time">5 min</span></div>
+        <h3 class="article-title">OpenAI's GPT-5.5 Launch and Microsoft Partnership Shift: What This Means for Every Startup Building on AI APIs</h3>
+        <p class="article-excerpt">New model drops with real agentic improvements. More importantly: OpenAI breaks Azure exclusivity and opens to AWS and Google Cloud. Every startup with AI infrastructure dependencies needs to pay attention.</p>
+        <div class="data-chips">
+          <div class="chip"><strong>GPT-5.5</strong> · Agentic performance +</div>
+          <div class="chip"><strong>Azure exclusivity</strong> → Multi-cloud</div>
+          <div class="chip"><strong>Implication</strong>: Price competition coming</div>
+        </div>
+      </div>
+      <div class="article-number">02</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('m3')">
+      <div>
+        <div class="meta-row"><span class="pill red">SECURITY</span><span class="read-time">5 min</span></div>
+        <h3 class="article-title">AI-Assisted Attacks Are Here: Mandiant's M-Trends 2026 and the Immediate Security Implications for Early-Stage Companies</h3>
+        <p class="article-excerpt">28.3% of CVEs exploited within 24 hours. One actor extorting 17 orgs simultaneously. For founders: the threat model for your startup just changed, and your security budget needs to reflect that.</p>
+        <div class="data-chips">
+          <div class="chip"><strong>28.3%</strong> of CVEs exploited &lt;24h</div>
+          <div class="chip"><strong>Solo actor</strong> → 17 targets simultaneously</div>
+          <div class="chip"><strong>Market</strong>: Security tooling massive opportunity</div>
+        </div>
+      </div>
+      <div class="article-number">03</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('m4')">
+      <div>
+        <div class="meta-row"><span class="pill">RESEARCH</span><span class="read-time">4 min</span></div>
+        <h3 class="article-title">Stanford HAI: AI Agents at 50% of PhD Scientist Performance — The Real Market Opportunity This Data Reveals</h3>
+        <p class="article-excerpt">Nature study finds best AI agents perform at half the level of PhD researchers on complex tasks. Counter-intuitively, this is a roadmap for where the next wave of valuable AI products will be built.</p>
+        <div class="data-chips">
+          <div class="chip"><strong>50%</strong> of PhD performance</div>
+          <div class="chip"><strong>Gap</strong>: Massive room for vertical AI tools</div>
+          <div class="chip"><strong>Watch</strong>: Human-in-loop AI for research</div>
+        </div>
+      </div>
+      <div class="article-number">04</div>
+    </div>
+
+    <div class="article-row" onclick="openModal('m5')">
+      <div>
+        <div class="meta-row"><span class="pill">VC FUNDING</span><span class="read-time">5 min</span></div>
+        <h3 class="article-title">$800M Into AI Infrastructure in One Week: The Funding Data Every Founder Needs to See Before Their Next Fundraise</h3>
+        <p class="article-excerpt">ShengShu $293M, Rogo $160M, Hightouch $150M, Avoca $125M, Parallel Web $100M. Capital is rotating out of application layer and into infrastructure. If you're building, your positioning needs to reflect this shift.</p>
+        <div class="data-chips">
+          <div class="chip"><strong>$800M+</strong> infra vs apps</div>
+          <div class="chip"><strong>Trend</strong>: VCs betting on moats &gt; growth</div>
+          <div class="chip"><strong>Hardware</strong>: 90% energy reduction claim</div>
+        </div>
+      </div>
+      <div class="article-number">05</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">Founders Dispatch</div>
+  <div class="footer-text">Signal for builders and investors · May 5, 2026</div>
+  <div class="footer-text">Data-driven · No hype · Actionable</div>
+</footer>
+
+<!-- Modals -->
+<div class="modal-overlay" id="m1" onclick="if(event.target===this)closeModal('m1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m1')">&times;</button>
+    <span class="modal-pill">POLICY / MARKET SIGNAL</span>
+    <h2 class="modal-title">Pentagon AI Military Contracts: The Government AI Market Opens and the Lessons in Anthropic's Exclusion</h2>
+    <p class="modal-deck">DoD signs with 8 tech giants for classified AI. Anthropic excluded over safety conditions. Now back in negotiations. The GTM and strategic lessons are dense.</p>
+    <div class="modal-signal">
+      <div class="signal-label">Key Founder Takeaway</div>
+      <div class="signal-text">Federal AI is a distinct market with distinct rules. Safety features are not universally positioned as advantages — they are negotiating terms. Know your buyer before you design your safety posture.</div>
+    </div>
+    <hr class="modal-line">
+    <div class="modal-body">
+      <p>The Department of Defense finalised AI agreements with OpenAI, Google, Microsoft, Amazon Web Services, Oracle, SpaceX, Nvidia and Reflection this week, covering deployment across classified military networks. The scope is broad: intelligence analysis, operational planning, logistics, and decision-support systems including in lethal contexts. For founders, the market signal is significant: federal AI procurement is not hypothetical. It is happening at scale, and the contracts are large. This is a TAM that was mostly theoretical eighteen months ago and is now concrete.</p>
+      <p>The Anthropic case study is the strategically instructive part. They were excluded because they made safety guardrails a contractual requirement — specifically around the military use of their models in warfare contexts. The administration declined those terms. The lesson is not "don't build safety features." The lesson is that in government GTM, safety features are contractual negotiations, not differentiators in the conventional sense. Every enterprise buyer values safety differently, and federal/defence buyers have their own framework that may not align with your assumptions. Founders building for government need to understand the buyer's constraints before designing their safety posture, not after.</p>
+      <p>The ending of this story: Anthropic is reportedly back in negotiations after announcing technical breakthroughs, which strongly implies they found a way to frame safety conditions that the administration can accept. This is a lesson in deal-making as much as product positioning. The size of the federal AI market — and the precedent these contracts set for allies and partner governments — means the companies that figure out government GTM in the next 24 months will have structural advantages that are difficult to overcome. If you're in the AI stack and not thinking about government as a segment, 2026 is the year to start.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m2" onclick="if(event.target===this)closeModal('m2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m2')">&times;</button>
+    <span class="modal-pill">AI MODELS / DISTRIBUTION</span>
+    <h2 class="modal-title">GPT-5.5 and the OpenAI-Microsoft Shift: Infrastructure Dependency Risk for Every API-First Startup</h2>
+    <p class="modal-deck">Model improvements are real and matter for agentic use cases. The distribution shift is more strategically significant for founders building on AI APIs.</p>
+    <div class="modal-signal">
+      <div class="signal-label">Key Founder Takeaway</div>
+      <div class="signal-text">Multi-cloud AI model availability = coming price competition for inference. If you're building on a single model provider, now is the time to audit your infrastructure dependency and optionality.</div>
+    </div>
+    <hr class="modal-line">
+    <div class="modal-body">
+      <p>GPT-5.5 is meaningfully better at agentic tasks — multi-step tool use, extended autonomous research chains, complex code execution over long inference chains. If you're building products that depend on AI agents completing multi-step work, the reliability improvements are commercially relevant. The model is also demonstrably better at following complex instructions consistently, which matters for products where prompt engineering is a core part of the product moat. Worth evaluating in your stack against benchmark tasks that matter to your specific use case.</p>
+      <p>The more strategically important news is the distribution shift. OpenAI confirmed it's relaxing Azure exclusivity and expanding to AWS, with Google Cloud discussions described as advanced. For founders, this has two immediate implications. First, price competition: when the same models become available through competing infrastructure providers, inference pricing will face downward pressure. That's good for margin if you're an API consumer. Second, dependency risk: if your infrastructure is currently Azure-concentrated because of OpenAI availability, you now have options — and the architecture decisions you make now will either add or reduce your vendor risk.</p>
+      <p>The medium-term strategic read: as top models become available across multiple clouds, the differentiation in the AI stack will shift further toward fine-tuned and specialised models, proprietary data advantages, and distribution. The "access to the best model" moat — which has been a real competitive advantage in some markets — will erode as those models become infrastructure. Founders building products whose core differentiation is "we use GPT-5.5" should be thinking about what the second layer of defensibility looks like when the model is commoditised on multiple clouds simultaneously.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m3" onclick="if(event.target===this)closeModal('m3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m3')">&times;</button>
+    <span class="modal-pill">SECURITY / THREAT LANDSCAPE</span>
+    <h2 class="modal-title">Mandiant M-Trends 2026: The Threat Model for Your Startup Just Changed and Your Security Budget Needs to Reflect That</h2>
+    <p class="modal-deck">28.3% of CVEs exploited within 24 hours. AI-assisted attacks scaling to single actors. The market opportunity in security tooling is enormous and the urgency is real.</p>
+    <div class="modal-signal">
+      <div class="signal-label">Key Founder Takeaway</div>
+      <div class="signal-text">Assume breach, design for containment. The 24-hour exploit window makes traditional patching cycles insufficient. Also: this threat environment is creating a $50B+ market for AI-native security tooling.</div>
+    </div>
+    <hr class="modal-line">
+    <div class="modal-body">
+      <p>Mandiant's M-Trends 2026 is the annual report that security practitioners actually read, and this year's edition contains numbers that should change how early-stage founders think about their security posture. The headline stat: 28.3% of CVEs are now being exploited within 24 hours of public disclosure. That is a structural shift from previous years. The implication: your traditional patch cycle — which assumes you have days or weeks to respond to a newly disclosed vulnerability — is no longer viable. Automated, AI-assisted patching and monitoring is not a nice-to-have; it is table stakes for any company with a meaningful attack surface.</p>
+      <p>The market opportunity this creates is significant. Everything that makes attacks faster and more scalable also creates demand for defensive tools that operate at the same speed and scale. AI-native security monitoring, automated vulnerability remediation, anomaly detection that can identify novel attack patterns — these are categories where startups can build durable businesses because the incumbents are large and slow and the threat environment is changing faster than they can ship. The Mandiant report documents specifically that one threat actor ran simultaneous extortion campaigns against 17 organizations using AI tooling. That's the attack surface your customers are facing, and they need tools to match.</p>
+      <p>For non-security founders: the operational implication is about architecture and unit economics of security spending. The "assume breach" posture — designing your system as if attackers are already inside and focusing on containment and recovery rather than only prevention — is the correct framework for 2026. Practically, this means: your authentication and authorisation model needs to be zero-trust, your data needs to be segmented, your incident response plan needs to be documented and tested, and your backup and recovery systems need to be isolated from your primary infrastructure. This is not a checklist for compliance; it is the baseline threat model. Investors are increasingly asking about it at Series A.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m4" onclick="if(event.target===this)closeModal('m4')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m4')">&times;</button>
+    <span class="modal-pill">RESEARCH / PRODUCT OPPORTUNITY</span>
+    <h2 class="modal-title">AI Agents at 50% of PhD Performance: Why This Data Is a Roadmap for the Next Wave of Valuable AI Products</h2>
+    <p class="modal-deck">Stanford HAI publishes in Nature. AI agents half as capable as PhD scientists on complex tasks. Counter-intuitively, this defines where the real product opportunities are.</p>
+    <div class="modal-signal">
+      <div class="signal-label">Key Founder Takeaway</div>
+      <div class="signal-text">The 50% gap is not an indictment of AI — it is a specification of the exact problems worth solving. Vertical AI tools that close specific parts of that gap in high-value domains (pharma, biotech, materials science) are the next wave of defensible B2B AI businesses.</div>
+    </div>
+    <hr class="modal-line">
+    <div class="modal-body">
+      <p>Stanford's AI Index Report 2026, published in Nature this week, benchmarks something the industry has been reluctant to measure rigorously: how well do AI agents actually perform on complex scientific tasks compared to human experts? Answer: top agents perform at approximately 50% of the success rate of PhD-level researchers. This number will be used by AI sceptics to argue AI is overhyped and by AI bulls to argue there's still enormous headroom. Both are right. For founders, the more useful frame is: this is a precise specification of where product-market fit exists.</p>
+      <p>The businesses with the best unit economics in AI right now are not the ones trying to replace PhDs wholesale — they are the ones that take specific, high-value tasks that currently require expert hours and bring AI performance on those specific tasks from 50% to 80% or 90% through domain-specific fine-tuning, curated datasets, and expert-in-the-loop design. Drug discovery, materials science, legal research, financial modelling — these are domains where the gap between "useful AI tool" and "replaces a PhD" is less important than the gap between "no AI tool" and "useful AI tool." The economics of that marginal improvement, in sectors that pay for expertise, are exceptional.</p>
+      <p>The subtler strategic point: the report raises a concern about whether AI adoption in research is shifting what questions scientists choose to ask — gravitating toward problems where AI can help rather than problems most worth solving. This is a product design problem disguised as a research ethics concern. It implies that the best AI research tools are not the ones that maximise AI autonomy; they are the ones that keep human scientists in the productive parts of the workflow and use AI to eliminate the unproductive friction. Human-in-the-loop AI for scientific research is not a compromise on the path to full automation — it may be the superior product architecture for the entire category.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m5" onclick="if(event.target===this)closeModal('m5')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m5')">&times;</button>
+    <span class="modal-pill">VC FUNDING / MARKET SIGNALS</span>
+    <h2 class="modal-title">$800M Into AI Infrastructure: The Funding Data That Should Inform Your Positioning and Fundraise Narrative</h2>
+    <p class="modal-deck">ShengShu $293M. Rogo $160M. Hightouch $150M. Avoca $125M. Parallel Web $100M. Capital is rotating to infrastructure. Here is what that means for your raise.</div>
+    <div class="modal-signal">
+      <div class="signal-label">Key Founder Takeaway</div>
+      <div class="signal-text">If you are building at the infrastructure layer of AI — inference, data pipelines, APIs, orchestration — your narrative should lead with defensibility and switching costs, not growth. Investors are writing checks for moats right now, not DAUs.</div>
+    </div>
+    <hr class="modal-line">
+    <div class="modal-body">
+      <p>The funding data from this week tells a clear story about where sophisticated capital is going. ShengShu Technology raised $293M for multimodal world-model AI — the kind of foundational model work that requires enormous capital and has deep technical moats. Rogo raised $160M Series D for AI-driven financial workflow automation, Hightouch $150M for customer data infrastructure, Avoca $125M for AI customer support systems, and Parallel Web Systems $100M at a $2B valuation for AI research and search APIs. Combined, this is over $800M deployed in a single week, all of it at the infrastructure layer. The application layer, conspicuously, is not where these checks are going.</p>
+      <p>The investment thesis being expressed here is: as foundation models improve and become more commoditised, application-layer companies will face increasing pricing pressure and commoditisation. Infrastructure companies — those providing the data pipelines, inference optimisation, API layers, and specialised models that sit beneath applications — retain structural advantages because switching costs are high and the problems they solve are core to operations, not nice-to-have features. This is a defensibility bet, not a growth bet. If you are building in this space, your fundraising narrative should lead with switching costs, data network effects, and infrastructure dependency — not user counts or revenue growth rates alone.</p>
+      <p>The hardware angle deserves specific attention for founders thinking about long-term infrastructure bets. Tsavorite raised seed funding for an Omni Processing Unit that integrates CPU, GPU and memory on a single chip with a claimed 90% reduction in inference energy consumption. Energy cost is one of the real binding constraints on enterprise AI deployment right now — it is the reason many companies are running smaller models than they would prefer, and the reason inference optimisation companies have strong businesses. A 90% reduction in energy cost per inference, if deliverable in production, does not just improve margins — it changes the addressable market for AI deployment by making workloads economical that currently are not. Founders in AI infrastructure should be tracking this closely because hardware improvements at this scale change the stack they are building on.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.active').forEach(m => { m.classList.remove('active'); document.body.style.overflow = ''; }); } });
+</script>
+</body>
+</html>
